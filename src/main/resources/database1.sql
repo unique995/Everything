@@ -1,3 +1,8 @@
+--创建数据库
+--create database if not exists everything;
+
+--创建数据表
+
 create table if not exists thing
 (
    name varchar(2048) not null comment '文件名',

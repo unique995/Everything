@@ -4,12 +4,27 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.function.Consumer;
+
 /**
  * everything的配置
  */
 @ToString
 public class EverythingConfig {
     private static volatile EverythingConfig config;
+   // @Getter
+//    //建立索引的路径
+//    private Set<String> includePath = new HashSet<>();
+//    //排除索引
+//    private Set<String> excludePath = new HashSet<>();
+
+
     /**
      * 索引目录
      */
@@ -104,6 +119,12 @@ public class EverythingConfig {
             synchronized (EverythingConfig.class){
                 if(config==null){
                     config=new EverythingConfig();
+
+//                    FileSystem fileSystems = FileSystems.getDefault();
+//                    Iterator<Path> iterator = (Iterator<Path>) ((FileSystem) fileSystems).getRootDirectories();
+//                    ((Iterable) iterator).forEach(path->) {
+//                    });
+//
                 }
             }
         }

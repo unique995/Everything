@@ -16,6 +16,8 @@ public interface FileScan {
      * 索引到数据库
      * @param path
      */
+
+    //建立索引
     void index(String path);
 
     /**

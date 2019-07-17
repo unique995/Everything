@@ -3,10 +3,14 @@ package com_everything_g2.core.model;
 import lombok.Data;
 
 @Data
+/*
+文件属性信息索引之后的记录
+ */
 public class Thing {
 
     /*
       文件名称（不含路径）
+      d:/a/b/hello.txt---->hello.txt
      */
     private String name;
     /*

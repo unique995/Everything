@@ -7,6 +7,7 @@ import java.io.File;
 
 /**
  * 文件对象转换Thing对象的辅助类
+ *
  */
 public class FileConvertThing {
     public static Thing convert(File file) {
@@ -19,14 +20,14 @@ public class FileConvertThing {
         //      无扩展名，*
         int index = file.getName().lastIndexOf(".");
         String extend = "*";
-        if (index != -1 && (index + 1) < file.getName().length()) {
+        if (index != -1 && (index + 1) < file.getName().length()) {//防止数组越界
             extend = name.substring(index + 1);
         }
         thing.setFileType(FileType.lookupByExtend(extend));
         thing.setDepth(comptePathDepth(file.getAbsolutePath()));
         return thing;
     }
-    public static int comptePathDepth(String path){
+    public static int comptePathDepth(String path){//计算文件的深度
         int depth=0;
         for(char c:path.toCharArray()){
            if( c==File.separatorChar){

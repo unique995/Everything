@@ -23,6 +23,10 @@ public class ThingSearchImpl implements ThingSearch {
 
     @Override
     public List<Thing> search(Condition condition) {
+        //数据化处理逻辑
+
+
+
         //BUG:如果本地文件系统将文件删除，数据库中仍然存储到索引信息，此时如果查询结果存在已经在文件系统中删除的文件，
         //那么需要在数据库中清除掉该文件的索引信息
        List<Thing> things=this.fileIndexDao.query(condition);

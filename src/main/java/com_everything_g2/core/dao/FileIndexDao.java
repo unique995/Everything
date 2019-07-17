@@ -7,7 +7,7 @@ import java.util.List;
 
 
 /**
- * 数据库访问的对象
+ * 业务层数据库访问的对象
  */
 public interface FileIndexDao {
     //File->Thing->Database Table Record

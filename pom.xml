@@ -50,7 +50,7 @@
             <artifactId>h2</artifactId>
             <version>1.4.197</version>
         </dependency>
-        <!--由阿里巴巴开源的数据库连接池druid-->
+        <!--由阿里巴巴开源的数据库连接池druid,提高数据库访问效率-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>

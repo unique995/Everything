@@ -27,21 +27,30 @@ public class FileIndexDaoImpl implements FileIndexDao {
     @Override
     public void insert(Thing thing) {
         //JDBC操作
+        //连接
         Connection connection=null;
+        //命令
         PreparedStatement statement=null;
         try {
+            //获取数据库连接
             connection=this.dataSource.getConnection();
+            //准备SQL语句
             String sql="insert into thing(name,path,depth,file_type)values(?,?,?,?)";
+            //准备命令
             statement=connection.prepareStatement(sql);
+            //设置参数
             //预编译命令中SQL的占位符赋值
             statement.setString(1,thing.getName());
             statement.setString(2,thing.getPath());
             statement.setInt(3,thing.getDepth());
+
             statement.setString(4,thing.getFileType().name());
+            //执行命令
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
+
             releaseResource(null,statement,connection);
         }
 
@@ -79,6 +88,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
         try {
             connection = this.dataSource.getConnection();
             StringBuilder sb=new StringBuilder();
+            //拼接SQL语句
             sb.append(" select name,path,depth,file_type from thing ");
             sb.append(" where ");
             //search<name> [file_type]
@@ -116,7 +126,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
         }
         return things;
     }
-    //重构
+    //重构，解决大量代码重复
     //在不改变程序的功能和业务的前提下，对代码进行优化，使得代码更易阅读和扩展
     private void releaseResource(ResultSet resultSet,PreparedStatement statement,
                                  Connection connection){

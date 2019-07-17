@@ -15,6 +15,10 @@ public enum FileType {
     FileType(String...extend){
         this.extend.addAll(Arrays.asList(extend));
     }
+    /*
+    根据文件扩展名查看文件所对应的类型
+    doc，PDF---->DOC
+     */
     public static FileType lookupByExtend(String extend){
         for(FileType fileType:FileType.values()){
             if(fileType.extend.contains(extend)){
