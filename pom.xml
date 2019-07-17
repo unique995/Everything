@@ -20,8 +20,8 @@
     <developers>
         <developer>
             <id>01</id>
-            <name>secondriver</name>
-            <email>2295296093@qq.com</email>
+            <name>unique</name>
+            <email>1255418138@qq.com</email>
             <roles>
                 <role>Creator</role>
                 <role>Developer</role>
@@ -67,6 +67,7 @@
     <!--程序构建信息-->
     <build>
         <plugins>
+            <!--编译插件-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
