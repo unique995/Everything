@@ -22,9 +22,7 @@ public class HandlerPath {
      * 排除的目录
      */
     private Set<String> excludePath=new HashSet <>();
-    private HandlerPath(){
-
-    }
+    private HandlerPath(){}
     public void addIncludePath(String path){
         this.includePath.add(path);
     }
@@ -53,11 +51,6 @@ public class HandlerPath {
         }
         return  handlerPath;
     }
-
-    public static void main(String[] args) {
-        System.out.println(HandlerPath.getDefaultHandlerPath());
-    }
-
     public Set <String> getIncludePath() {
         return includePath;
     }

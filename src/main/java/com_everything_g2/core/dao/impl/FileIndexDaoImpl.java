@@ -1,5 +1,6 @@
 package com_everything_g2.core.dao.impl;
 
+import com_everything_g2.core.dao.DataSourceFactory;
 import com_everything_g2.core.dao.FileIndexDao;
 import com_everything_g2.core.model.FileType;
 import com_everything_g2.core.model.Thing;
@@ -13,17 +14,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/*
+索引与检索对数据库的操作
+ */
 
 public class FileIndexDaoImpl implements FileIndexDao {
     //DriverManager.getConnection
     //DataSource.getConnection 通过数据源工厂获取DataSource实例化对象
     private final DataSource dataSource;
-
     public FileIndexDaoImpl(DataSource dataSource){
         this.dataSource=dataSource;
     }
-
     @Override
     public void insert(Thing thing) {
         //JDBC操作
@@ -43,19 +44,16 @@ public class FileIndexDaoImpl implements FileIndexDao {
             statement.setString(1,thing.getName());
             statement.setString(2,thing.getPath());
             statement.setInt(3,thing.getDepth());
-
             statement.setString(4,thing.getFileType().name());
             //执行命令
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
-
             releaseResource(null,statement,connection);
         }
 
     }
-
     @Override
     public void delete(Thing thing) {
         //thing->path=> D:\a\b\hello.java
@@ -77,9 +75,8 @@ public class FileIndexDaoImpl implements FileIndexDao {
         }
 
     }
-
-
     @Override
+    //查询
     public List<Thing> query(Condition condition) {
         List<Thing> things = new ArrayList <>();
         Connection connection = null;
@@ -87,36 +84,34 @@ public class FileIndexDaoImpl implements FileIndexDao {
         ResultSet resultSet=null;
         try {
             connection = this.dataSource.getConnection();
-            StringBuilder sb=new StringBuilder();
+            StringBuilder sb=new StringBuilder();//不会被多线程共享，所以不必用stringBuffer，属性上要用stringBuffer
             //拼接SQL语句
             sb.append(" select name,path,depth,file_type from thing ");
             sb.append(" where ");
             //search<name> [file_type]
-
             //采用模糊匹配
             //前模糊
             //后模糊 √
             //前后模糊
-            sb.append(" name like '").append(condition.getName()).append("%'");
+            sb.append(" name like '%").append(condition.getName()).append("%' ");
             if(condition.getFileType()!=null){
                 FileType fileType=FileType.lookupByName(condition.getFileType());
                 sb.append(" and file_type='"+fileType.name()+"'");
             }
             sb.append(" order by depth ").append(condition.getOrderByDepthAsc()?"asc":"desc");
             sb.append(" limit ").append(condition.getLimit());
-
-
+            //准备命令
             statement = connection.prepareStatement(sb.toString());
+            //执行命令
             resultSet=statement.executeQuery();
             //处理结果
             while(resultSet.next()){
-                //Record->Thing
+                //数据库中的行记录--->java中的对象
                 Thing thing=new Thing();
                 thing.setName(resultSet.getString("name"));
                 thing.setPath(resultSet.getString("path"));
                 thing.setDepth(resultSet.getInt("depth"));
-                thing.setFileType(FileType.lookupByName(resultSet
-                        .getString("file_type")));
+                thing.setFileType(FileType.lookupByName(resultSet.getString("file_type")));
                 things.add(thing);
             }
         } catch (SQLException e) {
@@ -128,8 +123,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
     }
     //重构，解决大量代码重复
     //在不改变程序的功能和业务的前提下，对代码进行优化，使得代码更易阅读和扩展
-    private void releaseResource(ResultSet resultSet,PreparedStatement statement,
-                                 Connection connection){
+    private void releaseResource(ResultSet resultSet,PreparedStatement statement, Connection connection){
         if(resultSet!=null){
             try {
                 resultSet.close();
@@ -152,5 +146,4 @@ public class FileIndexDaoImpl implements FileIndexDao {
             }
         }
     }
-
 }

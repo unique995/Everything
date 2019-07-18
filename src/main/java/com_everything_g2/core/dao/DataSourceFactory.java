@@ -10,14 +10,14 @@ import java.sql.SQLException;
 
 //数据库的数据源
 public class DataSourceFactory {
-    private static  volatile DruidDataSource  instance;
+    private static  volatile DruidDataSource  instance;//阿里巴巴提供的数据源，用单例获取数据源
     private  DataSourceFactory(){}
     //数据源
     public static DataSource getInstance(){
         if(instance==null){
             synchronized (DataSource.class){
                 if(instance==null){
-                    //实例化
+                    //new了一个对象
                     instance=new DruidDataSource();
                     //这是mysql的数据库配置
 //                    instance.setUrl("jdbc:mysql://127.0.0.1:3306/everything_g2");
@@ -26,10 +26,12 @@ public class DataSourceFactory {
 //                    instance.setDriverClassName("com.mysql.jdbc.Driver");
                     //这是连接h2数据库的配置
                     instance.setTestWhileIdle(false);
-                    //实例化
+                    //实例化数据库对象，设置驱动名称
                     instance.setDriverClassName("org.h2.Driver");
-                    //获取当前工程路径
+
+                    //获取当前项目的工程路径
                     String path=System.getProperty("user.dir")+ File.separator+"everything_g2";
+                    //把数据存到本地工程文件里
                     instance.setUrl("jdbc:h2:"+path);
 
                     //数据库创建完成之后，初始化表结构
@@ -41,9 +43,12 @@ public class DataSourceFactory {
     }
     //初始化数据库
     public static void databaseInit(boolean buildIndex){
+        //1.获取数据源
+        DataSource dataSource = DataSourceFactory.getInstance();
         //classpath:database.sql->String
         StringBuilder sb=new StringBuilder();
-        //获取SQL语句      getResourceAsStream:读取资源文件并转为stream流
+        //2.获取SQL语句      getResourceAsStream:读取资源文件并转为stream流，下面方法使得变成字符串，获得SQL语句
+        //try-with-resource方法
         try(InputStream in=DataSourceFactory.class.getClassLoader().getResourceAsStream("database1.sql");) {
             if (in != null) {
                 try (
@@ -61,25 +66,22 @@ public class DataSourceFactory {
             }catch (IOException e){
             e.printStackTrace();
         }
-        //获取数据
+        //获取数据库连接和名称执行SQL
         String sql=sb.toString();
-        try(Connection connection=getInstance().getConnection();){ //建立数据库连接
+        try(Connection connection=getInstance().getConnection();){ //1.获取数据库连接
             if(buildIndex){
-                //创建命令
+                //2.创建命令
                 try(PreparedStatement statement=connection.prepareStatement("drop table if exists thing;");){//PreparedStatement对象用于执行SQL语句
+                    //3.执行SQL语句
                     statement.executeUpdate();
                 }catch(SQLException e){
                     e.printStackTrace();
                 }
             }
-            //执行SQL语句
-            try(PreparedStatement statement=connection.prepareStatement(sql);){
-                statement.executeUpdate();
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
         }catch(SQLException e){
             e.printStackTrace();
         }
     }
+
+
 }

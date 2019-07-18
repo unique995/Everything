@@ -18,13 +18,6 @@ import java.util.function.Consumer;
 @ToString
 public class EverythingConfig {
     private static volatile EverythingConfig config;
-   // @Getter
-//    //建立索引的路径
-//    private Set<String> includePath = new HashSet<>();
-//    //排除索引
-//    private Set<String> excludePath = new HashSet<>();
-
-
     /**
      * 索引目录
      */
@@ -117,15 +110,6 @@ public class EverythingConfig {
             synchronized (EverythingConfig.class){
                 if(config==null){
                     config=new EverythingConfig();
-//遍历的目录
-//排除的目录
-                    //1.获取文件系统
-//                    FileSystem fileSystems = FileSystems.getDefault();
-                    //2.获取path
-//                    Iterator<Path> iterator = (Iterator<Path>) ((FileSystem) fileSystems).getRootDirectories();
-//                    ((Iterable) iterator).forEach(path->con) {
-//                    });
-//
                 }
             }
         }

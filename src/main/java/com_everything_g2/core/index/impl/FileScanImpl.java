@@ -8,12 +8,12 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.Set;
 
+
 public class FileScanImpl implements FileScan {
     private final LinkedList <FileInterceptor> interceptors = new LinkedList <>();
-    private EverythingConfig config=EverythingConfig.getInstance();
-
-
+    private EverythingConfig config = EverythingConfig.getInstance();
     @Override
+    //遍历文件（递归）
     public void index(String path) {
         Set<String> excludePaths=config.getHandlerPath().getExcludePath();
         //判断A path是否在B path中
@@ -27,7 +27,6 @@ public class FileScanImpl implements FileScan {
             File[] files = file.listFiles();
             if (files != null) {
                 for (File f : files) {
-
                     index(f.getAbsolutePath());
                 }
             }
@@ -36,7 +35,6 @@ public class FileScanImpl implements FileScan {
             interceptor.apply(file);
         }
     }
-
     //拦截器
     @Override
     public void interceptor(FileInterceptor interceptor) {

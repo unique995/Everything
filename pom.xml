@@ -67,7 +67,7 @@
     <!--程序构建信息-->
     <build>
         <plugins>
-            <!--编译插件-->
+            <!--编译插件,编译源代码-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -82,6 +82,7 @@
                     <!--配置主清单文件-->
                     <archive>
                         <manifest>
+                            <!--配置主类-->
                             <addClasspath>true</addClasspath>
                             <mainClass>com_everything_g1.cmd.EverythingG1CmdApplication</mainClass>
                             <classpathPrefix>lib</classpathPrefix>
@@ -89,6 +90,7 @@
                     </archive>
                 </configuration>
             </plugin>
+            <!--依赖配置插件-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

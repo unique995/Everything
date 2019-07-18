@@ -19,7 +19,7 @@ public enum FileType {
     根据文件扩展名查看文件所对应的类型
     doc，PDF---->DOC
      */
-    public static FileType lookupByExtend(String extend){
+    public static FileType lookupByExtend(String extend){//根据扩展名获取文件类型对象
         for(FileType fileType:FileType.values()){
             if(fileType.extend.contains(extend)){
                 return fileType;
@@ -27,7 +27,7 @@ public enum FileType {
         }
         return FileType.OTHER;
     }
-    public  static FileType lookupByName(String name){
+    public  static FileType lookupByName(String name){//根据文件类型名获取文件类型对象
         for(FileType fileType:FileType.values()){
             if(fileType.name().equals(name)){
                 return fileType;

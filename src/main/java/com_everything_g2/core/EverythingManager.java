@@ -77,18 +77,18 @@ public class EverythingManager {
       DataSourceFactory.databaseInit(true);
 
       HandlerPath handlerPath=config.getHandlerPath();
-      Set<String> includePaths= handlerPath.getIncludePath();
+      Set<String> includePaths= handlerPath.getIncludePath();//目录
       new Thread(() -> {
           System.out.println("Build Index Started...");
-          CountDownLatch countDownLatch=new CountDownLatch(includePaths.size());
+          CountDownLatch countDownLatch=new CountDownLatch(includePaths.size());//
           for(String path: includePaths){
               executorService.submit(() -> {
                   fileScan.index(path);
-                  countDownLatch.countDown();
+                  countDownLatch.countDown();//线程执行完了，数量减一，结果返回CDL
               });
           }
           try {
-              countDownLatch.await();
+              countDownLatch.await();//阻塞，直到任务完成
           } catch (InterruptedException e) {
               e.printStackTrace();
           }
@@ -98,13 +98,14 @@ public class EverythingManager {
   }
 
     /**
-     * 检索功能
+     * 检索功能,需要条件
      */
     public List<Thing> search(Condition condition){
         //Condition 用户提供的是：name file_type
         //limit orderby
         condition.setLimit(config.getMaxReturn());
         condition.setOrderByDepthAsc(!config.getOrderbyDesc());
+
         return this.thingSearch.search(condition);
     }
 
