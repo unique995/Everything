@@ -37,6 +37,7 @@ public class FileScanImpl implements FileScan {
         }
     }
 
+    //拦截器
     @Override
     public void interceptor(FileInterceptor interceptor) {
         this.interceptors.add(interceptor);

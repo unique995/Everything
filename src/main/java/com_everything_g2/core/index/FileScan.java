@@ -21,7 +21,7 @@ public interface FileScan {
     void index(String path);
 
     /**
-     * 拦截器对象
+     * 遍历的拦截器
      * @param interceptor
      */
     void interceptor(FileInterceptor interceptor);

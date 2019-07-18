@@ -11,9 +11,7 @@ import java.sql.SQLException;
 //数据库的数据源
 public class DataSourceFactory {
     private static  volatile DruidDataSource  instance;
-    private  DataSourceFactory(){
-
-    }
+    private  DataSourceFactory(){}
     //数据源
     public static DataSource getInstance(){
         if(instance==null){
@@ -32,8 +30,8 @@ public class DataSourceFactory {
                     instance.setDriverClassName("org.h2.Driver");
                     //获取当前工程路径
                     String path=System.getProperty("user.dir")+ File.separator+"everything_g2";
-
                     instance.setUrl("jdbc:h2:"+path);
+
                     //数据库创建完成之后，初始化表结构
                    databaseInit(false);
                 }
@@ -45,14 +43,11 @@ public class DataSourceFactory {
     public static void databaseInit(boolean buildIndex){
         //classpath:database.sql->String
         StringBuilder sb=new StringBuilder();
-        //获取SQL语句
-        try(InputStream in=DataSourceFactory.class
-                .getClassLoader().getResourceAsStream("database1.sql");
-           ) {
+        //获取SQL语句      getResourceAsStream:读取资源文件并转为stream流
+        try(InputStream in=DataSourceFactory.class.getClassLoader().getResourceAsStream("database1.sql");) {
             if (in != null) {
                 try (
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(in)
-                        )) {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
                          String line=null;
                          while((line=reader.readLine())!=null){
                              sb.append(line);
@@ -68,20 +63,17 @@ public class DataSourceFactory {
         }
         //获取数据
         String sql=sb.toString();
-        try(Connection connection=getInstance().getConnection();
-        ){
+        try(Connection connection=getInstance().getConnection();){ //建立数据库连接
             if(buildIndex){
                 //创建命令
-                try(PreparedStatement statement=connection
-                        .prepareStatement("drop table if exists thing;");){
+                try(PreparedStatement statement=connection.prepareStatement("drop table if exists thing;");){//PreparedStatement对象用于执行SQL语句
                     statement.executeUpdate();
                 }catch(SQLException e){
                     e.printStackTrace();
                 }
             }
             //执行SQL语句
-            try(PreparedStatement statement=connection
-                    .prepareStatement(sql);){
+            try(PreparedStatement statement=connection.prepareStatement(sql);){
                 statement.executeUpdate();
             }catch(SQLException e){
                 e.printStackTrace();

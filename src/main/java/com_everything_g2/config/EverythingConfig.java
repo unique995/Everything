@@ -111,18 +111,19 @@ public class EverythingConfig {
         this.orderbyDesc = orderbyDesc;
     }
 
-    private EverythingConfig(){
-
-    }
+    private EverythingConfig(){}
     public static EverythingConfig getInstance(){
         if(config==null){
             synchronized (EverythingConfig.class){
                 if(config==null){
                     config=new EverythingConfig();
-
+//遍历的目录
+//排除的目录
+                    //1.获取文件系统
 //                    FileSystem fileSystems = FileSystems.getDefault();
+                    //2.获取path
 //                    Iterator<Path> iterator = (Iterator<Path>) ((FileSystem) fileSystems).getRootDirectories();
-//                    ((Iterable) iterator).forEach(path->) {
+//                    ((Iterable) iterator).forEach(path->con) {
 //                    });
 //
                 }
