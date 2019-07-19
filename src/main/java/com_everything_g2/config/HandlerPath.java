@@ -29,14 +29,14 @@ public class HandlerPath {
     public void addExcludePath(String path){
         this.excludePath.add(path);
     }
-    public static HandlerPath getDefaultHandlerPath(){
+    public static HandlerPath getDefaultHandlerPath(){//返回默认的要处理的路径
         HandlerPath handlerPath=new HandlerPath();
         Iterable<Path> paths=FileSystems.getDefault().getRootDirectories();
-        //默认要包含的目录,既构建索引时需要处理的路径
+        //默认要包含的目录,即构建索引时需要处理的路径
         paths.forEach(path -> {
             handlerPath.addIncludePath(path.toString());
         });
-        //默认要排除的目录既构建索引时不需要处理的路径
+        //默认要排除的目录即构建索引时不需要处理的路径
         String systemName=System.getProperty("os.name");
         if(systemName.contains("Windows")){
             //Windows
@@ -58,4 +58,6 @@ public class HandlerPath {
     public Set <String> getExcludePath() {
         return excludePath;
     }
+
+
 }

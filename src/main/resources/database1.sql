@@ -1,7 +1,3 @@
---创建数据库
---create database if not exists everything;
-
---创建数据表
 
 create table if not exists thing
 (
@@ -11,4 +7,5 @@ create table if not exists thing
    file_type varchar (12) not null comment '文件类型'
 );
 
-create index if not exists index_name on thing(name);
+-- create index if not exists index_name on thing(name);
+

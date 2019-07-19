@@ -3,15 +3,16 @@ package com_everything_g2.core.model;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-//FileType模型类表示文件的扩展和归类
+//FileType模型类表示文件的扩展名归类
 
 public enum FileType {
     IMG("jpg","jpeg","png","bmp","gif"),
-    DOC("doc","docx","pdf","ppt","pptx","xls"),
+    DOC("doc","docx","pdf","ppt","pptx","xls","txt"),
     BIN("exe","jar","sh","msi"),
     ARCHIVE("zip","rar"),
     OTHER("*");
-    private Set<String> extend=new HashSet <String>();
+
+    private Set<String> extend=new HashSet <String>();//把扩展名放到set里
     FileType(String...extend){
         this.extend.addAll(Arrays.asList(extend));
     }
@@ -35,4 +36,5 @@ public enum FileType {
         }
         return FileType.OTHER;
     }
+
 }

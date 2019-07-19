@@ -7,6 +7,7 @@ import com_everything_g2.core.model.Thing;
 import com_everything_g2.core.model.Condition;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,11 +37,12 @@ public class FileIndexDaoImpl implements FileIndexDao {
             //获取数据库连接
             connection=this.dataSource.getConnection();
             //准备SQL语句
-            String sql="insert into thing(name,path,depth,file_type)values(?,?,?,?)";
+            String sql="insert into thing(name, path, depth, file_type) values(?,?,?,?)";
+            //System.out.println(sql);
             //准备命令
             statement=connection.prepareStatement(sql);
             //设置参数
-            //预编译命令中SQL的占位符赋值
+            //预编译命令中SQL的占位符(?)赋值
             statement.setString(1,thing.getName());
             statement.setString(2,thing.getPath());
             statement.setInt(3,thing.getDepth());
@@ -81,7 +83,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
         List<Thing> things = new ArrayList <>();
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet=null;
+        ResultSet resultSet=null;//结果集
         try {
             connection = this.dataSource.getConnection();
             StringBuilder sb=new StringBuilder();//不会被多线程共享，所以不必用stringBuffer，属性上要用stringBuffer
@@ -100,6 +102,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
             }
             sb.append(" order by depth ").append(condition.getOrderByDepthAsc()?"asc":"desc");
             sb.append(" limit ").append(condition.getLimit());
+            //System.out.println(sb);
             //准备命令
             statement = connection.prepareStatement(sb.toString());
             //执行命令
@@ -145,5 +148,20 @@ public class FileIndexDaoImpl implements FileIndexDao {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) {
+//        FileIndexDao fileIndexDao = new FileIndexDaoImpl(DataSourceFactory.getInstance());
+//        Condition condition = new Condition();
+//        condition.setName("简历.pdf");
+//        List<Thing> things = fileIndexDao.query(condition);
+//        for (Thing t :things) {
+//            System.out.println(t);
+//        }
+//        Thing thing = new Thing();
+//        thing.setPath("D:\\test\\简历.ppt");
+//        thing.setDepth(2);
+//        thing.setFileType(FileType.DOC);
+//        thing.setName("简历.ppt");fileIndexDao.insert(thing);
     }
 }

@@ -44,11 +44,11 @@ public class EverythingG2CmdApplication {
                     manager.buildIndex();
                     break;
                 default: {
-                    if (line.startsWith("search")) {
+                    if (line.startsWith("search")){
                         //解析参数
                         String[] segments = line.split(" ");
                         if (segments.length >= 2) {
-                            Condition condition=new Condition();
+                            Condition condition = new Condition();
                             String name = segments[1];
                             condition.setName(name);
                             if (segments.length >= 3) {
@@ -113,9 +113,7 @@ public class EverythingG2CmdApplication {
                 }
             }
         }
-
         System.out.println(config);
-
     }
 }
 

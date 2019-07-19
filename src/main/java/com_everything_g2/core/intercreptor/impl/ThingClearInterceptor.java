@@ -12,7 +12,7 @@ public class ThingClearInterceptor implements  Runnable,ThingInterceptor {
     private final Queue<Thing> thingQueue;
 
 
-    public ThingClearInterceptor(FileIndexDao fileIndexDao,Queue <Thing> thingQueue) {
+    public ThingClearInterceptor(FileIndexDao fileIndexDao,Queue <Thing> thingQueue) { //清理的队列
         this.fileIndexDao = fileIndexDao;
         this.thingQueue = thingQueue;
     }
@@ -23,7 +23,7 @@ public class ThingClearInterceptor implements  Runnable,ThingInterceptor {
     }
 
     @Override
-    public void run() {
+    public void run() {//清理队列
       while(true){
           try {
               Thread.sleep(100);

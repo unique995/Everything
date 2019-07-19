@@ -15,11 +15,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class ThingSearchImpl implements ThingSearch {
     public final FileIndexDao fileIndexDao;
     private final ThingClearInterceptor interceptor;
-    private final Queue<Thing> thingQueue=new ArrayBlockingQueue <>(1024);
+    private final Queue<Thing> thingQueue = new ArrayBlockingQueue <>(1024);
     public ThingSearchImpl(FileIndexDao fileIndexDao) {
         this.fileIndexDao=fileIndexDao;
         this.interceptor=new ThingClearInterceptor(this.fileIndexDao,thingQueue);
-        this.backgroundClearThread();
+        this.backgroundClearThread();//一旦构建好，就默默执行
     }
     @Override
     public List<Thing> search(Condition condition) {
@@ -34,16 +34,15 @@ public class ThingSearchImpl implements ThingSearch {
             if(!file.exists()){
                 //删除
                 iterator.remove();
-                this.thingQueue.add(thing);
+                this.thingQueue.add(thing);//加到队列里
             }
         }
         return things;
     }
-    private void backgroundClearThread(){
-        //进行后台清理工作
+    private void backgroundClearThread(){//进行后台清理工作
         Thread thread=new Thread(this.interceptor);
         thread.setName("Thread-Clear");
-        thread.setDaemon(true);
+        thread.setDaemon(true);//守护线程
         thread.start();
     }
 }

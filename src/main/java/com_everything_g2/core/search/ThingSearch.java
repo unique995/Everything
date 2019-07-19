@@ -13,5 +13,5 @@ public interface ThingSearch {
      * @param condition
      * @return
      */
-    List<Thing> search(Condition condition);
+    List<Thing> search(Condition condition);//返回一组记录
 }

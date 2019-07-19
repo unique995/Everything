@@ -22,7 +22,7 @@ public class EverythingConfig {
      * 索引目录
      */
     @Getter
-    private HandlerPath handlerPath=HandlerPath.getDefaultHandlerPath();
+    private HandlerPath handlerPath = HandlerPath.getDefaultHandlerPath();
     /**
      * 最大检索返回的结果数
      */
@@ -37,7 +37,7 @@ public class EverythingConfig {
      */
     @Getter
     @Setter
-    private Boolean enablebuildIndex=false;
+    private Boolean enablebuildIndex = false;
     /**
      * 检索时deepth深度的排序规则
      * true:表示降序
@@ -46,7 +46,7 @@ public class EverythingConfig {
      */
     @Getter
     @Setter
-    private Boolean orderbyDesc=false;
+    private Boolean orderbyDesc = false;
 
     public Integer getInterval() {
         return interval;

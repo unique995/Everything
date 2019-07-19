@@ -17,32 +17,18 @@ public class FileConvertThing {
         String name = file.getName();
         thing.setName(file.getName());
         thing.setPath(file.getAbsolutePath());
-        thing.setDepth(comptePathDepth(file.getAbsolutePath()));
         //目录-> *
         //文件->有扩展名，通过扩展名获取FileType
         //      无扩展名，*
         int index = file.getName().lastIndexOf(".");//扩展名从最后一个点开始分隔
-        String extend = "*";
+        String extend = "*";//扩展名为*
         if (index != -1 && (index + 1) < file.getName().length()) {//防止数组越界
             extend = name.substring(index + 1);
         }
         thing.setFileType(FileType.lookupByExtend(extend));
+        thing.setDepth(comptePathDepth(file.getAbsolutePath()));
         return thing;
     }
-//    private static FileType computeFileType(File file){
-//        if(file.isDirectory()){
-//            return FileType.OTHER;
-//        }
-//        String fileName = file.getName();
-//        int index = fileName.lastIndexOf(".");
-//        if(index != -1 && index< fileName.length()-1){
-//            String extend = fileName.substring(index+1);
-//            return FileType.lookupByExtend(extend);
-//        }else {
-//            return FileType.OTHER;
-//        }
-//    }
-
     public static int comptePathDepth(String path){//计算文件的深度
         int depth=0;
         for(char c:path.toCharArray()){

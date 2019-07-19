@@ -36,33 +36,30 @@ public class EverythingManager {
      */
   private FileScan fileScan;
   private ThingSearch thingSearch;
-
-    //线程池的执行器
-  private final ExecutorService executorService=Executors.newFixedThreadPool(Runtime.getRuntime()
-          .availableProcessors()*2);
-
-     private EverythingConfig config=EverythingConfig.getInstance();
-
-  private EverythingManager(){
-      this.fileScan=new FileScanImpl();
-      /*
+   /*
       数据库访问层
      */
-      FileIndexDao fileIndexDao = new FileIndexDaoImpl(DataSourceFactory.getInstance());
+   private FileIndexDao fileIndexDao;
+
+    //线程池的执行器
+  private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
+  private EverythingConfig config = EverythingConfig.getInstance();
+  private EverythingManager(){
+      this.fileScan=new FileScanImpl();
+      fileIndexDao = new FileIndexDaoImpl(DataSourceFactory.getInstance());
       this.fileScan=new FileScanImpl();
       //打印索引信息的拦截器
       //this.fileScan.interceptor(new FilePrintInterceptor());
       //索引信息写数据库的拦截器
       this.fileScan.interceptor(new FileIndexInterceptor(fileIndexDao));
-
-      this.thingSearch=new ThingSearchImpl(fileIndexDao);
+      this.thingSearch = new ThingSearchImpl(fileIndexDao);
 
   }
   public static EverythingManager getInstance(){
-      if(manager==null){
+      if(manager == null){
           synchronized (EverythingManager.class){
-              if(manager==null){
-                  manager=new EverythingManager();
+              if(manager == null){
+                  manager = new EverythingManager();
               }
           }
       }
@@ -74,27 +71,34 @@ public class EverythingManager {
      */
   public void buildIndex(){
       //建立索引
+      //首先写出要遍历的目录
+      //利用多线程的调度器，数量是目录数
       DataSourceFactory.databaseInit(true);
 
       HandlerPath handlerPath=config.getHandlerPath();
       Set<String> includePaths= handlerPath.getIncludePath();//目录
-      new Thread(() -> {
-          System.out.println("Build Index Started...");
-          CountDownLatch countDownLatch=new CountDownLatch(includePaths.size());//
-          for(String path: includePaths){
-              executorService.submit(() -> {
-                  fileScan.index(path);
-                  countDownLatch.countDown();//线程执行完了，数量减一，结果返回CDL
-              });
+      new Thread(new Runnable() {
+          @Override
+          public void run() {
+              System.out.println("Build Index Started...");
+              CountDownLatch countDownLatch=new CountDownLatch(includePaths.size());//
+              for(String path: includePaths){
+                  executorService.submit(new Runnable() {
+                      @Override
+                      public void run() {
+                          fileScan.index(path);
+                          countDownLatch.countDown();//线程执行完了，数量减一，结果返回CDL
+                      }
+                  });
+              }
+              try {
+                  countDownLatch.await();//阻塞，直到任务完成
+              } catch (InterruptedException e) {
+                  e.printStackTrace();
+              }
+              System.out.println("Build Index complete....");
           }
-          try {
-              countDownLatch.await();//阻塞，直到任务完成
-          } catch (InterruptedException e) {
-              e.printStackTrace();
-          }
-          System.out.println("Build Index complete....");
       }).start();
-
   }
 
     /**
@@ -105,7 +109,6 @@ public class EverythingManager {
         //limit orderby
         condition.setLimit(config.getMaxReturn());
         condition.setOrderByDepthAsc(!config.getOrderbyDesc());
-
         return this.thingSearch.search(condition);
     }
 
