@@ -7,5 +7,4 @@ create table if not exists thing
    file_type varchar (12) not null comment '文件类型'
 );
 
--- create index if not exists index_name on thing(name);
-
+create index if not exists index_name on thing(name);

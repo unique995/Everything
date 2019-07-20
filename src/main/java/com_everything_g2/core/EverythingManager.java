@@ -12,6 +12,8 @@ import com_everything_g2.core.intercreptor.impl.FileIndexInterceptor;
 import com_everything_g2.core.intercreptor.impl.FilePrintInterceptor;
 import com_everything_g2.core.model.Condition;
 import com_everything_g2.core.model.Thing;
+import com_everything_g2.core.monitor.FileMonitor;
+import com_everything_g2.core.monitor.Impl.FileMonitorImpl;
 import com_everything_g2.core.search.ThingSearch;
 import com_everything_g2.core.search.impl.ThingSearchImpl;
 
@@ -44,6 +46,8 @@ public class EverythingManager {
     //线程池的执行器
   private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
   private EverythingConfig config = EverythingConfig.getInstance();
+  private FileMonitor fileMonitor;
+
   private EverythingManager(){
       this.fileScan=new FileScanImpl();
       fileIndexDao = new FileIndexDaoImpl(DataSourceFactory.getInstance());
@@ -53,6 +57,7 @@ public class EverythingManager {
       //索引信息写数据库的拦截器
       this.fileScan.interceptor(new FileIndexInterceptor(fileIndexDao));
       this.thingSearch = new ThingSearchImpl(fileIndexDao);
+      this.fileMonitor = new FileMonitorImpl(fileIndexDao);
 
   }
   public static EverythingManager getInstance(){
@@ -136,5 +141,22 @@ public class EverythingManager {
     public void quit(){
         System.out.println("欢迎使用，再见");
         System.exit(0);
+    }
+
+    /*
+    文件监控
+     */
+    public void monitor(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    fileMonitor.monitor(config.getHandlerPath());
+                    fileMonitor.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

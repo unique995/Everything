@@ -30,12 +30,13 @@ public class DataSourceFactory {
                     instance.setDriverClassName("org.h2.Driver");
 
                     //获取当前项目的工程路径
-                    String path=System.getProperty("user.dir")+ File.separator+"everything_g2";
+                    String path=System.getProperty("user.dir")+ File.separator+"Everything g2";
                     //把数据存到本地工程文件里
                     instance.setUrl("jdbc:h2:"+path);
 //
                     //数据库创建完成之后，初始化表结构
-                   databaseInit(false);
+
+                   databaseInit(false);//发现表不存在时创建，创建索引时，删表
                 }
             }
         }
@@ -45,8 +46,9 @@ public class DataSourceFactory {
     //初始化数据库
     public static void databaseInit(boolean buildIndex){
         StringBuffer sb = new StringBuffer();
-        try (
-            InputStream in = DataSourceFactory.class.getClassLoader().getResourceAsStream("database1.sql");
+        try (//getResourceAsStream:读取资源文件并转为stream流，下面方法使得变成字符串，获得SQL语句
+             //try-with-resource方法
+             InputStream in = DataSourceFactory.class.getClassLoader().getResourceAsStream("database1.sql");
         ) {
             if (in != null){
                 try(BufferedReader reader = new BufferedReader(new InputStreamReader(in))){
@@ -64,9 +66,10 @@ public class DataSourceFactory {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //获取数据库连接和名称执行SQL
         String sql = sb.toString();
         try(Connection connection = getInstance().getConnection();) {
-            if (buildIndex){
+            if (buildIndex){//true，重建表
                 connection.prepareStatement("drop table if exists thing;").executeUpdate();
             }
             try(PreparedStatement statement = connection.prepareStatement(sql)){
@@ -77,52 +80,9 @@ public class DataSourceFactory {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        //1.获取数据源
-////        DataSource dataSource = DataSourceFactory.getInstance();
-//        //classpath:database.sql->String
-//        StringBuilder sb=new StringBuilder();
-//        //2.获取SQL语句      getResourceAsStream:读取资源文件并转为stream流，下面方法使得变成字符串，获得SQL语句
-//        //try-with-resource方法
-//        try(InputStream in = DataSourceFactory.class.getClassLoader().getResourceAsStream("database1.sql");) {
-//            if (in != null) {
-//                try (
-//                        BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-//                         String line=null;
-//                         while((line = reader.readLine())!=null){
-//                             sb.append(line);
-//                         }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            } else {
-//                throw new RuntimeException("database1.sql script can't load please check it.");
-//            }
-//            }catch (IOException e){
-//            e.printStackTrace();
-//        }
-//        //获取数据库连接和名称执行SQL
-//        String sql=sb.toString();
-//        try(Connection connection=getInstance().getConnection();){ //1.获取数据库连接
-////            if(buildIndex){
-////                //2.创建命令
-////                try(PreparedStatement statement=connection.prepareStatement("drop table if exists thing;");){//PreparedStatement对象用于执行SQL语句
-////                    //3.执行SQL语句
-////                    statement.executeUpdate();
-////                }catch(SQLException e){
-////                    e.printStackTrace();
-////                }
-////            }
-//
-//            try(PreparedStatement statement=connection.prepareStatement(sql);){
-//                statement.executeUpdate();
-//            }
-//        }catch(SQLException e){
-//            e.printStackTrace();
-//        }
-
     }
 
     public static void main(String[] args) {
-        DataSourceFactory.databaseInit(false);
+        DataSourceFactory.databaseInit(true);
     }
 }
