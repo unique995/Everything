@@ -31,9 +31,9 @@ public class EverythingG2CmdApplication {
         //2.命令行交互
         Scanner scanner = new Scanner(System.in);
         //3.用户交互输入
-        System.out.println("欢迎使用Everything_g2");
+        System.out.println("欢迎使用小工具Everything：");
         while (true) {
-            System.out.print(">>");
+            System.out.print("->");
             String line = scanner.nextLine();
             switch (line) {
                 case "help":

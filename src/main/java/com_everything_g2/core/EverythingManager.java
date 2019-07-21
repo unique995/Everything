@@ -129,17 +129,17 @@ public class EverythingManager {
          * 搜索：search<name>[<file-Type> img | doc | bin | archive | other]
          */
         System.out.println("命令列表：");
-        System.out.println("命令列表：quit");
-        System.out.println("命令列表：help");
-        System.out.println("命令列表：index");
-        System.out.println("命令列表：search<name>[<file-Type> img | doc | bin | archive | other]");
+        System.out.println("退   出 ：quit");
+        System.out.println("帮   助 ：help");
+        System.out.println("建立索引：index");
+        System.out.println("命令参数：search<name>[<file-Type> img | doc | bin | archive | other]");
     }
 
     /**
      * 退出功能
      */
     public void quit(){
-        System.out.println("欢迎使用，再见");
+        System.out.println("欢迎下次使用，再见！");
         System.exit(0);
     }
 
