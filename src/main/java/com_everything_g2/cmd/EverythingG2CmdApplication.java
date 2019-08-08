@@ -17,7 +17,7 @@ public class EverythingG2CmdApplication {
             String configFile = args[0];
             Properties p = new Properties();
             try {
-                p.load(new FileInputStream(configFile));
+                p.load(new FileInputStream(configFile));//加载一个Properties配置文件
                 //p的值赋值给EverythingConfig对象
                 everythingConfigInit(p);
 
