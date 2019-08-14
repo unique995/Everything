@@ -17,11 +17,11 @@ public class HandlerPath {
     /**
      * 包含的目录
      */
-    private Set<String> includePath =new HashSet <>();
+    private Set<String> includePath = new HashSet <>();
     /**
      * 排除的目录
      */
-    private Set<String> excludePath=new HashSet <>();
+    private Set<String> excludePath = new HashSet <>();
     private HandlerPath(){}
     public void addIncludePath(String path){
         this.includePath.add(path);
@@ -30,14 +30,17 @@ public class HandlerPath {
         this.excludePath.add(path);
     }
     public static HandlerPath getDefaultHandlerPath(){//返回默认的要处理的路径
+
         HandlerPath handlerPath=new HandlerPath();
-        Iterable<Path> paths=FileSystems.getDefault().getRootDirectories();
+
+        Iterable<Path> paths = FileSystems.getDefault().getRootDirectories();
         //默认要包含的目录,即构建索引时需要处理的路径
         paths.forEach(path -> {
             handlerPath.addIncludePath(path.toString());
         });
         //默认要排除的目录即构建索引时不需要处理的路径
-        String systemName=System.getProperty("os.name");
+        String systemName = System.getProperty("os.name");
+
         if(systemName.contains("Windows")){
             //Windows
             handlerPath.addExcludePath("C:\\Windows");
@@ -54,7 +57,6 @@ public class HandlerPath {
     public Set <String> getIncludePath() {
         return includePath;
     }
-
     public Set <String> getExcludePath() {
         return excludePath;
     }

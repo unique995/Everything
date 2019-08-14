@@ -27,10 +27,10 @@ public class ThingSearchImpl implements ThingSearch {
         //BUG:如果本地文件系统将文件删除，数据库中仍然存储到索引信息，此时如果查询结果存在已经在文件系统中删除的文件，
         //那么需要在数据库中清除掉该文件的索引信息
        List<Thing> things=this.fileIndexDao.query(condition);
-        Iterator<Thing> iterator=things.iterator();
+        Iterator<Thing> iterator = things.iterator();
         while(iterator.hasNext()){
             Thing thing=iterator.next();
-            File file=new File(thing.getPath());
+            File file = new File(thing.getPath());
             if(!file.exists()){
                 //删除
                 iterator.remove();

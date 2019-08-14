@@ -86,7 +86,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
         ResultSet resultSet=null;//结果集
         try {
             connection = this.dataSource.getConnection();
-            StringBuilder sb=new StringBuilder();//不会被多线程共享，所以不必用stringBuffer，属性上要用stringBuffer
+            StringBuilder sb = new StringBuilder();//不会被多线程共享，所以不必用stringBuffer，属性上要用stringBuffer
             //拼接SQL语句
             sb.append(" select name,path,depth,file_type from thing ");
             sb.append(" where ");

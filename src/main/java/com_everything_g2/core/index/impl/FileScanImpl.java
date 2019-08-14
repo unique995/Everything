@@ -40,6 +40,7 @@ public class FileScanImpl implements FileScan {
         }
     }
     //添加拦截器
+    // this.fileScan.interceptor(new FileIndexInterceptor(fileIndexDao));
     @Override
     public void interceptor(FileInterceptor interceptor) {
         this.interceptors.add(interceptor);

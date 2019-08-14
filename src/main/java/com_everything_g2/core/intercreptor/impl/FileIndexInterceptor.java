@@ -22,7 +22,7 @@ public class FileIndexInterceptor implements FileInterceptor {
     // [转换，写入（Thing）]
     @Override
     public void apply(File file) {
-        Thing thing=FileConvertThing.convert(file);
+        Thing thing = FileConvertThing.convert(file);
         this.fileIndexDao.insert(thing);
     }
 }

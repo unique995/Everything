@@ -50,12 +50,16 @@ public class EverythingManager {
 
   private EverythingManager(){
       this.fileScan=new FileScanImpl();
+
       fileIndexDao = new FileIndexDaoImpl(DataSourceFactory.getInstance());
+
       this.fileScan=new FileScanImpl();
       //打印索引信息的拦截器
       //this.fileScan.interceptor(new FilePrintInterceptor());
+
       //索引信息写数据库的拦截器
       this.fileScan.interceptor(new FileIndexInterceptor(fileIndexDao));
+
       this.thingSearch = new ThingSearchImpl(fileIndexDao);
       this.fileMonitor = new FileMonitorImpl(fileIndexDao);
 
@@ -80,7 +84,7 @@ public class EverythingManager {
       //利用多线程的调度器，数量是目录数
       DataSourceFactory.databaseInit(true);
 
-      HandlerPath handlerPath=config.getHandlerPath();
+      HandlerPath handlerPath = config.getHandlerPath();
       Set<String> includePaths= handlerPath.getIncludePath();//目录
       new Thread(new Runnable() {
           @Override
