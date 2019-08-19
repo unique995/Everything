@@ -7,6 +7,7 @@ import com_everything_g2.core.model.Condition;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -57,9 +58,12 @@ public class EverythingG2CmdApplication {
                                 String type = segments[2];
                                 condition.setFileType(type.toUpperCase());
                             }
+                            long startTime= System.currentTimeMillis();
                             manager.search(condition).forEach(thing -> {
                                 System.out.println(thing.getPath());
                             });
+                            long endTime = System.currentTimeMillis();
+                            System.out.println("查找文件时间：" + (endTime - startTime) + "毫秒");
                         } else {
                             manager.help();
                         }

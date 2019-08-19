@@ -89,6 +89,7 @@ public class EverythingManager {
       new Thread(new Runnable() {
           @Override
           public void run() {
+              long startIndexTime = System.currentTimeMillis();
               System.out.println("Build Index Started...");
               CountDownLatch countDownLatch=new CountDownLatch(includePaths.size());//
               for(String path: includePaths){
@@ -106,6 +107,10 @@ public class EverythingManager {
                   e.printStackTrace();
               }
               System.out.println("Build Index complete....");
+              long endIndexTime = System.currentTimeMillis();
+              System.out.println("简历索引时间：" + (endIndexTime - startIndexTime) + "毫秒");
+              int filenum = FileIndexInterceptor.getFileNumber();
+              System.out.println(filenum);
           }
       }).start();
   }

@@ -44,7 +44,7 @@ public class DataSourceFactory {
     }
 
     //初始化数据库
-    public static void databaseInit(boolean buildIndex){
+    public static void  databaseInit(boolean buildIndex){
         StringBuffer sb = new StringBuffer();
         try (//getResourceAsStream:读取资源文件并转为stream流，下面方法使得变成字符串，获得SQL语句
              //try-with-resource方法
