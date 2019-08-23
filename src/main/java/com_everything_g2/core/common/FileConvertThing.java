@@ -16,7 +16,6 @@ public class FileConvertThing {
         thing.setName(file.getName());
         thing.setPath(file.getAbsolutePath());
 
-
         //目录-> *
         //文件->有扩展名，通过扩展名获取FileType
         //      无扩展名，*

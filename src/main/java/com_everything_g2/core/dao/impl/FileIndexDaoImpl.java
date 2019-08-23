@@ -24,7 +24,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
     //DataSource.getConnection 通过数据源工厂获取DataSource实例化对象
     private final DataSource dataSource;
     public FileIndexDaoImpl(DataSource dataSource){
-        this.dataSource=dataSource;
+        this.dataSource = dataSource;
     }
     @Override
     public void insert(Thing thing) {
@@ -54,7 +54,6 @@ public class FileIndexDaoImpl implements FileIndexDao {
         }finally{
             releaseResource(null,statement,connection);
         }
-
     }
     @Override
     public void delete(Thing thing) {
@@ -83,7 +82,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
         List<Thing> things = new ArrayList <>();
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet=null;//结果集
+        ResultSet resultSet = null;//结果集
         try {
             connection = this.dataSource.getConnection();
             StringBuilder sb = new StringBuilder();//不会被多线程共享，所以不必用stringBuffer，属性上要用stringBuffer
