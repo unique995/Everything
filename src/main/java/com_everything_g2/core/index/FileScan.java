@@ -16,16 +16,13 @@ public interface FileScan {
      * 索引到数据库
      * @param path
      */
-
     //建立索引
     void index(String path);
-
     /**
      * 遍历的拦截器
      * @param interceptor
      */
     void interceptor(FileInterceptor interceptor);
-
     public static void main(String[] args) {
         FileScan fileScan=new FileScanImpl();
         //第一个：打印输出拦截器

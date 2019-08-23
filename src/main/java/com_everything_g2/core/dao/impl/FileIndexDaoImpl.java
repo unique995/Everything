@@ -30,17 +30,17 @@ public class FileIndexDaoImpl implements FileIndexDao {
     public void insert(Thing thing) {
         //JDBC操作
         //连接
-        Connection connection=null;
+        Connection connection = null;
         //命令
-        PreparedStatement statement=null;
+        PreparedStatement statement = null;
         try {
             //获取数据库连接
-            connection=this.dataSource.getConnection();
+            connection = this.dataSource.getConnection();
             //准备SQL语句
-            String sql="insert into thing(name, path, depth, file_type) values(?,?,?,?)";
+            String sql = "insert into thing(name, path, depth, file_type) values(?,?,?,?)";
             //System.out.println(sql);
             //准备命令
-            statement=connection.prepareStatement(sql);
+            statement = connection.prepareStatement(sql);
             //设置参数
             //预编译命令中SQL的占位符(?)赋值
             statement.setString(1,thing.getName());
@@ -61,11 +61,11 @@ public class FileIndexDaoImpl implements FileIndexDao {
         //thing->path=> D:\a\b\hello.java
         //like path%
         //= 最多删除一个，绝对匹配
-        Connection connection=null;
-        PreparedStatement statement=null;
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            connection=this.dataSource.getConnection();
-            String sql="delete from thing where path=?";
+            connection = this.dataSource.getConnection();
+            String sql = "delete from thing where path=?";
             statement=connection.prepareStatement(sql);
             //预编译命令中SQL的占位符赋值
             statement.setString(1,thing.getPath());

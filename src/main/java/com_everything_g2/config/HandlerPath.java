@@ -30,9 +30,7 @@ public class HandlerPath {
         this.excludePath.add(path);
     }
     public static HandlerPath getDefaultHandlerPath(){//返回默认的要处理的路径
-
-        HandlerPath handlerPath=new HandlerPath();
-
+        HandlerPath handlerPath = new HandlerPath();
         Iterable<Path> paths = FileSystems.getDefault().getRootDirectories();
         //默认要包含的目录,即构建索引时需要处理的路径
         paths.forEach(path -> {

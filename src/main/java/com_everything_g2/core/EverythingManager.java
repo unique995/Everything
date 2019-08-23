@@ -1,6 +1,4 @@
 package com_everything_g2.core;
-
-
 import com_everything_g2.config.EverythingConfig;
 import com_everything_g2.config.HandlerPath;
 import com_everything_g2.core.dao.DataSourceFactory;
@@ -38,31 +36,22 @@ public class EverythingManager {
      */
   private FileScan fileScan;
   private ThingSearch thingSearch;
-   /*
+  /*
       数据库访问层
-     */
+  */
    private FileIndexDao fileIndexDao;
-
     //线程池的执行器
   private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
   private EverythingConfig config = EverythingConfig.getInstance();
   private FileMonitor fileMonitor;
 
   private EverythingManager(){
-      this.fileScan=new FileScanImpl();
-
+      this.fileScan = new FileScanImpl();
       fileIndexDao = new FileIndexDaoImpl(DataSourceFactory.getInstance());
-
-      this.fileScan=new FileScanImpl();
-      //打印索引信息的拦截器
-      //this.fileScan.interceptor(new FilePrintInterceptor());
-
       //索引信息写数据库的拦截器
       this.fileScan.interceptor(new FileIndexInterceptor(fileIndexDao));
-
       this.thingSearch = new ThingSearchImpl(fileIndexDao);
       this.fileMonitor = new FileMonitorImpl(fileIndexDao);
-
   }
   public static EverythingManager getInstance(){
       if(manager == null){
@@ -91,7 +80,7 @@ public class EverythingManager {
           public void run() {
               long startIndexTime = System.currentTimeMillis();
               System.out.println("Build Index Started...");
-              CountDownLatch countDownLatch=new CountDownLatch(includePaths.size());//
+              CountDownLatch countDownLatch = new CountDownLatch(includePaths.size());
               for(String path: includePaths){
                   executorService.submit(new Runnable() {
                       @Override
