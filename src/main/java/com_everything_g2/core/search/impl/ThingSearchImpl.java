@@ -17,8 +17,8 @@ public class ThingSearchImpl implements ThingSearch {
     private final ThingClearInterceptor interceptor;
     private final Queue<Thing> thingQueue = new ArrayBlockingQueue <>(1024);
     public ThingSearchImpl(FileIndexDao fileIndexDao) {
-        this.fileIndexDao=fileIndexDao;
-        this.interceptor=new ThingClearInterceptor(this.fileIndexDao,thingQueue);
+        this.fileIndexDao = fileIndexDao;
+        this.interceptor = new ThingClearInterceptor(this.fileIndexDao,thingQueue);
         this.backgroundClearThread();//一旦构建好，就默默执行
     }
     @Override

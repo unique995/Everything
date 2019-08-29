@@ -74,7 +74,7 @@ public class EverythingManager {
       DataSourceFactory.databaseInit(true);
 
       HandlerPath handlerPath = config.getHandlerPath();
-      Set<String> includePaths= handlerPath.getIncludePath();//目录
+      Set<String> includePaths = handlerPath.getIncludePath();//目录
       new Thread(new Runnable() {
           @Override
           public void run() {
